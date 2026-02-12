@@ -1,3 +1,19 @@
+_Added For Clarification: February 12th, 2026_
+
+---
+
+You likely want the official W3C repo + spec: https://github.com/webmachinelearning/webmcp
+
+This was an early WebMCP proposal / implementation. I was just a guy with a dream.
+
+The idea of WebMCP has since evolved and is being worked on by much more capable folks that develop the web.
+
+This implementation is **not** compliant with the W3C spec.
+
+All this being said, please do feel free to try it out, as it demonstrates the value of WebMCP.
+
+---
+
 # WebMCP
 
 A proposal and code for websites to support client side LLMs

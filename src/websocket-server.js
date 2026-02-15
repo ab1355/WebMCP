@@ -1502,7 +1502,7 @@ const main = async () => {
     process.on('SIGTERM', () => shutdownGracefully('SIGTERM'));
 
     // Enable keyboard input handling for CTRL+C on Windows
-    if (process.platform === 'win32') {
+    if (process.platform === 'win32' && process.stdin.isTTY) {
         process.stdin.setRawMode(true);
         process.stdin.resume();
         process.stdin.on('data', (data) => {

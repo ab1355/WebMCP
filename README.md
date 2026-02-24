@@ -20,6 +20,8 @@ A proposal and code for websites to support client side LLMs
 
 [![NPM Version](https://img.shields.io/npm/v/%40jason.today%2Fwebmcp)](https://www.npmjs.com/package/@jason.today/webmcp) [![MIT licensed](https://img.shields.io/npm/l/%40jason.today%2Fwebmcp)](./LICENSE)
 
+> **AI Agents & Contributors:** See [AGENTS.md](./AGENTS.md) for guidance on working with this codebase.
+
 WebMCP allows websites to share tools, resources, prompts, etc. to LLMs. In other words, WebMCP allows a website to be an MCP server. No sharing API Keys. Use any model you want.
 
 [Here's a simple website I built that is WebMCP-enabled](https://webmcp.dev)
@@ -64,7 +66,7 @@ All configuration files are stored in `~/.webmcp` directory.
 
 ## Getting started (adding WebMCP to your website)
 
-To use WebMCP, simply include [`webmcp.js`](https://github.com/jasonjmcghee/WebMCP/releases) on your page (via src or directly):
+To use WebMCP, simply include [`webmcp.js`](https://github.com/ab1355/WebMCP/releases) on your page (via src or directly):
 
 ```
 <script src="webmcp.js"></script>

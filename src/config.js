@@ -105,6 +105,7 @@ async function configureMcpClient(clientType) {
 
 export {
     CONFIG,
+    CONFIG_DIR,
     HOST,
     PID_FILE,
     ENV_FILE,

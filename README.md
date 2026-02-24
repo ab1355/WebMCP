@@ -142,6 +142,33 @@ sequenceDiagram
 This is a super early project. I'm very interested in hardening security to prevent malicious extensions etc. from being
 able to perform prompt injection attacks and similar. If you have constructive ideas, please reach out or open an issue.
 
+## Iroh Integration
+
+WebMCP integrates [iroh](https://github.com/n0-computer/iroh) to provide enhanced networking and security features:
+
+### Persistent Cryptographic Identity
+
+When the WebMCP server starts for the first time it generates an Ed25519 keypair and stores it in `~/.webmcp/iroh.key`. This keypair gives the server a stable, cryptographically verifiable **NodeId** that persists across restarts.
+
+```
+Iroh node started
+  NodeId:   ceb5849744c97544d44394d783043db0e2b81df64f10c0a86a4b9f8b0603617f
+  Relay:    https://use1-1.relay.iroh.network./
+  Addrs:    192.168.1.10:38593
+```
+
+### Checking Your NodeId
+
+```bash
+npx @jason.today/webmcp --iroh-node-id
+```
+
+### What iroh provides
+
+- **Authenticated encryption** — connections use QUIC with TLS 1.3, providing authenticated, encrypted transport from day one.
+- **Hole-punching** — iroh can traverse NAT and firewalls to establish direct P2P connections, falling back to relay servers operated by [number 0](https://n0.computer).
+- **Stable identity** — every WebMCP server has a unique, verifiable NodeId derived from its Ed25519 public key, making it easy to identify and authenticate servers.
+
 ## Built in tools
 
 - Token generator (for connecting to WebMCP websites)

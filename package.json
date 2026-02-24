@@ -24,6 +24,7 @@
   "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.6.1",
+    "@number0/iroh": "^0.35.0",
     "child_process": "^1.0.2",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.1",

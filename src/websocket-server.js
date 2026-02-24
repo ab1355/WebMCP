@@ -23,6 +23,7 @@ import {
     setConfig,
     configureMcpClient,
 } from './config.js';
+import { startIrohNode, stopIrohNode, getIrohNodeId } from './iroh.js';
 
 let serverToken = SERVER_TOKEN;
 
@@ -1286,6 +1287,7 @@ const parseArgs = async () => {
     let cleanTokens = false;
     let encodedPair = null;
     let daemon = true; // Default to daemonize
+    let showIrohNodeId = false;
 
     for (let i = 0; i < args.length; i++) {
         const arg = args[i];
@@ -1330,6 +1332,8 @@ const parseArgs = async () => {
             cleanTokens = true;
         } else if (arg === '-f' || arg === '--foreground') {
             daemon = false;
+        } else if (arg === '--iroh-node-id') {
+            showIrohNodeId = true;
         } else if (arg === '--forked') {
             // This is an internal flag to indicate we're the forked child                                                                                                   │ │
             // No need to do anything with it here, just don't error on it
@@ -1340,7 +1344,7 @@ const parseArgs = async () => {
         }
     }
 
-    return {port, quit, newToken, cleanTokens, encodedPair, daemon, startMCP};
+    return {port, quit, newToken, cleanTokens, encodedPair, daemon, startMCP, showIrohNodeId};
 };
 
 const showHelp = () => {
@@ -1357,6 +1361,7 @@ Options:
   -f, --foreground               Run in foreground (don't daemonize)
   -m, --mcp                      Internal WebMCP Server codepath, likely only used in MCP client config
   -d, --docker                   Tell the MCP client that WebMCP is running in docker
+  --iroh-node-id                 Display the iroh NodeId (cryptographic identity) of this server
   
 Use --new to generate a token which clients can use to register on the /register endpoint.
 Use --clean to remove all authorized tokens when you want to start fresh.
@@ -1387,6 +1392,16 @@ const main = async () => {
             console.log(`Server is running with PID: ${serverStatus.pid}. Please restart it to apply changes.`);
         }
 
+        process.exit(0);
+    }
+
+    // Handle iroh-node-id command
+    if (CONFIG.showIrohNodeId) {
+        await startIrohNode();
+        const nodeId = await getIrohNodeId();
+        console.log(`\nIroh NodeId (cryptographic identity of this WebMCP server):`);
+        console.log(nodeId);
+        await stopIrohNode();
         process.exit(0);
     }
 
@@ -1454,10 +1469,14 @@ const main = async () => {
     // Save PID file
     await savePid();
 
+    // Start the iroh node for cryptographic identity and P2P networking
+    startIrohNode().catch(err => {
+        console.error('Warning: iroh node failed to start:', err.message);
+    });
+
     // Start the server
     const PORT = CONFIG.port;
     httpServer.listen(PORT, () => {
-        console.error(`WebSocket server running at http://${HOST}:${PORT}`);
         console.error(`WebSocket server running at http://${HOST}:${PORT}`);
         console.error(`WebMCP client token (for MCP path): ${serverToken}`);
         console.error(`WebMCP client URL: ws://${HOST}:${PORT}${MCP_PATH}?token=${serverToken}`);
@@ -1470,6 +1489,9 @@ const main = async () => {
 
         // Save authorized tokens before shutting down
         await saveAuthorizedTokens();
+
+        // Shut down the iroh node
+        await stopIrohNode();
 
         // Close all WebSocket connections in all channels
         for (const channel of Object.values(channels)) {

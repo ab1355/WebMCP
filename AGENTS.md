@@ -6,6 +6,8 @@ This document provides guidance for AI coding agents (e.g., GitHub Copilot, Clau
 
 **WebMCP** is a localhost WebSocket bridge that lets websites act as MCP (Model Context Protocol) servers. It exposes website tools, resources, and prompts to client-side LLMs without sharing API keys. The implementation is **not** compliant with the W3C WebMCP spec.
 
+For frontend standards, security, and architecture across WebMCP projects, refer to the [371-OS Frontend Framework (FRONTEND_FRAMEWORK.md)](./docs/FRONTEND_FRAMEWORK.md).
+
 Key concepts:
 - A **WebSocket server** runs locally and bridges MCP clients (like Claude Desktop, Cursor) to websites.
 - Websites embed `webmcp.js` as a widget, obtain a registration token, and register their tools/resources/prompts with the local server.
